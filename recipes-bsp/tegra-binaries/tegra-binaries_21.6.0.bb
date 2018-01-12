@@ -26,6 +26,8 @@ deltask do_packagedata
 deltask do_rm_work
 
 do_preconfigure() {
-    cp ${WORKDIR}/xorg.conf ${S}
+  :
+  # Add code here to copy files got from file:// sources 
+  #cp ${WORKDIR}/xorg.conf ${S}
 }
 addtask preconfigure after do_patch
