@@ -41,7 +41,7 @@ do_install() {
   install -d ${D}${systemd_system_unitdir}
   install -d ${D}${sysconfdir}/systemd
   install -m 0755 ${B}/etc/systemd/nv.sh ${D}${sysconfdir}/systemd/nv.sh
-  sed -i -e '/^# Ensure libglx/,$d' ${D}${sysconfdir}/systemd/nv.sh
+  sed -i -e '/# Ensure libglx*/,$d' ${D}${sysconfdir}/systemd/nv.sh
   install -m 0644 ${B}/etc/systemd/system/nv.service ${D}${systemd_system_unitdir}
 }
 
