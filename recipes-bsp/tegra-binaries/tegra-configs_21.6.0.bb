@@ -17,7 +17,7 @@ do_install() {
  
   # Generic xorg.conf (machine override below sets the one for the jetson, thus we can avoid the udev rule)
   install -d ${D}${sysconfdir}/X11
-  install -m 0644 ${B}/etc/X11/xorg.conf ${D}${sysconfdir}/X11/
+  install -m 0644 ${B}/etc/X11/xorg.conf ${D}${sysconfdir}/X11/xorg.conf
 
   # Encoder tuning
   install -m 0644 ${B}/etc/enctune.conf ${D}${sysconfdir}
@@ -45,9 +45,9 @@ do_install() {
   install -m 0644 ${B}/etc/systemd/system/nv.service ${D}${systemd_system_unitdir}
 }
 
-# Jetson tk1 specific files
 do_install_append_jetson-tk1() {
-  install -m 0644 ${B}/etc/X11/xorg.conf.jetson-tk1 ${D}${sysconfdir}/X11/
+  # Jetson tk1 specific files 
+  install -m 0644 ${B}/etc/X11/xorg.conf.jetson-tk1 ${D}${sysconfdir}/X11/xorg.conf
   install -m 0644 ${B}/etc/pulse/default.pa.hdmi ${D}${sysconfdir}/pulse/default.pa
 }
 
