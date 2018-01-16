@@ -36,13 +36,13 @@ do_install() {
 
   # startup scripts: the config archive provides for both upstart and systemd scripts. In standard L4T upstart is used, whereas here
   # we're working with systemd. They are similar but slightly different (e.g. in the parameters passed to configure the interactive
-  # governor, and in the CPU frequency boost on input event). We'll go with the systemd ones for the time being. We don't need the
-  # nvfb script as it just sets up some symlinks for egl libraries etc, which are already solved by the package
+  # governor, and in the CPU frequency boost on input event). 
+  # To keep the system as close to stock L4T I've ported the upstart script to a systemd service.
+  # We can instead discard the nvfb script as it just sets up some symlinks for egl libraries etc, which are already solved by these packages
   install -d ${D}${systemd_system_unitdir}
   install -d ${D}${sysconfdir}/systemd
-  install -m 0755 ${B}/etc/systemd/nv.sh ${D}${sysconfdir}/systemd/nv.sh
-  sed -i -e '/# Ensure libglx*/,$d' ${D}${sysconfdir}/systemd/nv.sh
-  install -m 0644 ${B}/etc/systemd/system/nv.service ${D}${systemd_system_unitdir}
+  install -m 0755 ${S}/nvstartup.sh ${D}${sysconfdir}/systemd/
+  install -m 0644 ${S}/nvstartup.service ${D}${systemd_system_unitdir}/
 }
 
 do_install_append_jetson-tk1() {
@@ -61,9 +61,9 @@ FILES_${PN}-xorg = "${sysconfdir}/X11"
 FILES_${PN}-alsa = "${sysconfdir}/asound.conf.* ${sysconfdir}/udev/rules.d/90-alsa-asound-tegra.rules"
 FILES_${PN}-udev = "${sysconfdir}/udev/rules.d/99-tegra-devices.rules ${sysconfdir}/udev/rules.d/99-tegra-mmc-ra.rules"
 FILES_${PN}-pulseaudio = "${sysconfdir}/pulse"
-FILES_${PN}-nvstartup = "${sysconfdir}/systemd/nv.sh ${systemd_system_unitdir}/nv.service"
+FILES_${PN}-nvstartup = "${sysconfdir}/systemd/nvstartup.sh ${systemd_system_unitdir}/nvstartup.service"
 SYSTEMD_PACKAGES = "${PN}-nvstartup"
-SYSTEMD_SERVICE_${PN}-nvstartup = "nv.service"
+SYSTEMD_SERVICE_${PN}-nvstartup = "nvstartup.service"
 RDEPENDS_${PN}-alsa = "udev"
 RDEPENDS_${PN}-udev = "udev"
 RDEPENDS_${PN}-nvstartup = "bash"
